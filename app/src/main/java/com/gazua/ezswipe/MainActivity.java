@@ -50,6 +50,17 @@ public class MainActivity extends AppCompatActivity {
                 signIn();
             }
         });
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String name = user.getDisplayName();
+            String uid = user.getUid();
+            Toast.makeText(MainActivity.this, name + "   " + uid, Toast.LENGTH_LONG).show();
+
+
+        }
+
+
     }
 
     @Override
