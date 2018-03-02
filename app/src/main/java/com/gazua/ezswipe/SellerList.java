@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,11 +32,18 @@ public class SellerList extends AppCompatActivity {
     ListView listview;
     ArrayList<String> li = new ArrayList<>();
     ArrayAdapter<String> adapter;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seller_list);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference databaseReference = database.getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+//        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         final List<Map<String, String>> list = new ArrayList<Map<String, String>>();
         listview = (ListView)findViewById(R.id.list_view);
@@ -46,10 +55,20 @@ public class SellerList extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(SellerList.this);
 
+                final String testrid = list.get(position).get("RID");
+                String name = list.get(position).get("Buyer_name");
+                String price = list.get(position).get("Price");
+                String num = list.get(position).get("Number");
+                String body = "$" + price + ", " + num + " people";
+                FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                final String seller = currentFirebaseUser.getDisplayName();
+
+
+
                 // set title
-                builder.setTitle("Joe Bruin");      // 여기다가 제목 써주세요!!
+                builder.setTitle(name);      // 여기다가 제목 써주세요!!
                 // set message
-                builder.setMessage("De Neve, $5, 5 people");  // 여기다가 이름/가격/인원수
+                builder.setMessage(body);  // 여기다가 이름/가격/인원수
                 // set icon
                 builder.setIcon(R.drawable.ic_launcher_background);
                 // set cancelable
@@ -58,8 +77,10 @@ public class SellerList extends AppCompatActivity {
                 builder.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        // 여기다가 status 0 --> 1 바꿔주는거 해주세요!!
-                        startActivity(new Intent(SellerList.this, Sdealdone.class));
+//                        // 여기다가 status 0 --> 1 바꿔주는거 해주세요!!
+//                        mDatabase.child(testrid).child("Status").setValue("1");
+//                        mDatabase.child(testrid).child("Seller_name").setValue(seller);
+                        startActivity(new Intent(SellerList.this, DiningSelect.class));
                     }
                 });
                 // set negative/No button
@@ -78,8 +99,8 @@ public class SellerList extends AppCompatActivity {
             }
         });
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference = database.getReference();
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference databaseReference = database.getReference();
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -89,7 +110,7 @@ public class SellerList extends AppCompatActivity {
                     String dining_str = (String) child.child("Location").getValue();
                     if(Objects.equals(dining_str, DiningSelect.dining_hall())) {
                         Map<String, String> map = new HashMap<String, String>();
-//                        map.put("RID", (String) child.child("RID").getValue());
+                        map.put("RID", (String) child.child("RID").getValue());
 //                        map.put("Buyer_ID", (String) child.child("Buyer_ID").getValue());
                         map.put("Buyer_name", (String) child.child("Buyer_name").getValue());
 //                        map.put("Created_at", (String) child.child("Created_at").getValue());
@@ -99,6 +120,7 @@ public class SellerList extends AppCompatActivity {
 //                        map.put("Seller_name", (String) child.child("Seller_name").getValue());
 //                        map.put("Status", (String) child.child("Status").getValue());
 //                        map.put("Buyer_ID", (String) child.child("Buyer_ID").getValue());
+
 
                         list.add(map);
                     }
