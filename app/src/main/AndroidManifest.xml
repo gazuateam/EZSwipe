@@ -17,25 +17,30 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".FireIDService"
+        <service
+            android:name=".FireIDService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".FireBaseMsgService"
+        <service
+            android:name=".FireBaseMsgService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
-        <!--<activity android:name=".ProfileActivity" />-->
-        <activity android:name=".DatabaseActivity"></activity>
+        <!-- <activity android:name=".ProfileActivity" /> -->
+        <activity android:name=".DatabaseActivity" />
         <activity android:name=".DiningSelect" />
         <activity android:name=".BuyerPrice" />
         <activity android:name=".BuyerWait" />
-        <activity android:name=".SellerList"></activity>
+        <activity android:name=".SellerList" />
+        <activity android:name=".dealdone" />
+        <activity android:name=".Bdealdone" />
+        <activity android:name=".Sdealdone"></activity>
     </application>
 
 </manifest>

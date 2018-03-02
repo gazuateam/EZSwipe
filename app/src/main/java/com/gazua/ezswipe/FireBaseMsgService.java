@@ -35,7 +35,7 @@ public class FireBaseMsgService  extends FirebaseMessagingService
                 .setPriority(Notification.PRIORITY_MAX)
                 .setSound(defaultSoundUri)
                 .setDefaults(Notification.DEFAULT_VIBRATE);
-        Intent resultIntent = new Intent(this, BuyerWait.class);
+        Intent resultIntent = new Intent(this, Bdealdone.class);
 
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
